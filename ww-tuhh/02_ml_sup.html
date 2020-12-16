@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-11-05" />
+<meta name="date" content="2020-12-16" />
 
 <title>02 Supervised ML</title>
 
@@ -28,8 +28,6 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -84,6 +82,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -411,40 +410,156 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">02 Supervised ML</h1>
-<h4 class="date">2020-11-05</h4>
+<h4 class="date">2020-12-16</h4>
 
 </div>
 
 
-<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
-<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1">
-<h1><span class="header-section-number">1</span> My first post</h1>
-<p>Last compiled: 2020-12-13</p>
-<p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
-</div>
-</div>
-</div>
-<div id="my-second-post-note-the-order" class="section level1">
-<h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-12-13</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
-</div>
-<div id="adding-r-stuff" class="section level1">
-<h1><span class="header-section-number">3</span> Adding R stuff</h1>
-<p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
-<p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
-<pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
-hist(samples)</code></pre>
-<p><img src="02_ml_sup_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
-</div>
+<p>Supervised ML - Regression (II)</p>
+<pre class="r"><code>library(tidymodels)
+library(rstanarm)
+library(broom.mixed)
+
+bike_data_tbl &lt;- readRDS(&quot;raw_data/bike_orderlines.rds&quot;)
+
+ggplot(bike_data_tbl,
+       aes(x = price, 
+           y = weight, 
+           group = category_1, 
+           col = category_1)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  scale_color_manual(values=c(&quot;#2dc6d6&quot;, &quot;#d65a2d&quot;, &quot;#d6af2d&quot;, &quot;#8a2dd6&quot;))
+
+
+data_split &lt;- initial_split(bike_data_tbl, prop = 3/4)
+
+# Create data frames for the two sets:
+train_data &lt;- training(data_split)
+test_data  &lt;- testing(data_split)
+
+# recipe
+bike_rec &lt;- 
+  recipe(price ~ ., data = train_data) %&gt;% 
+  update_role(url, new_role = &quot;URL&quot;) %&gt;% 
+  step_dummy(all_nominal(), -all_outcomes()) %&gt;% 
+  step_zv(all_predictors()) %&gt;% 
+  prep()
+
+bike_rec
+
+lr_mod &lt;- 
+  logistic_reg() %&gt;% 
+  set_engine(&quot;glm&quot;)
+
+lr_mod
+
+bike_wflow &lt;- 
+  workflow() %&gt;% 
+  add_model(lr_mod) %&gt;% 
+  add_recipe(bike_rec)
+bike_wflow
+
+
+bike_fit &lt;- 
+  bike_wflow %&gt;% 
+  fit(data = train_data)
+
+bike_fit %&gt;% 
+  pull_workflow_fit() %&gt;% 
+  tidy()
+
+predict(bike_fit, test_data)
+
+bike_pred &lt;- 
+  predict(bike_fit, test_data, type = &quot;prob&quot;) %&gt;% 
+  bind_cols(test_data %&gt;% select(price, category_2)) 
+
+bike_pred %&gt;% 
+  roc_curve(truth = price, category_2) %&gt;% 
+  autoplot()
+
+
+bike_pred %&gt;% 
+  roc_auc(truth = arr_delay, category_2)
+
+
+model_01_linear_lm_simple &lt;- linear_reg(mode = &quot;regression&quot;) %&gt;%
+  set_engine(&quot;lm&quot;) %&gt;%
+  fit(price ~ category_2 + frame_material, data = train_data)
+
+
+new_cross_country &lt;- tibble(
+  model = &quot;Exceed AL SL new&quot;,
+  category_2 = &quot;Cross-Country&quot;,
+  frame_material = &quot;aluminium&quot;,
+  shimano_dura_ace = 0,
+  shimano_ultegra = 0,
+  shimano_105 = 0,
+  shimano_tiagra = 0,
+  Shimano_sora = 0,
+  shimano_deore = 0,
+  shimano_slx = 0,
+  shimano_grx = 0,
+  Shimano_xt = 1,
+  Shimano_xtr = 0,
+  Shimano_saint = 0,
+  SRAM_red = 0,
+  SRAM_force = 0,
+  SRAM_rival = 0,
+  SRAM_apex = 0,
+  SRAM_xx1 = 0,
+  SRAM_x01 = 0,
+  SRAM_gx = 0,
+  SRAM_nx = 0,
+  SRAM_sx = 0,
+  Campagnolo_potenza = 0,
+  Campagnolo_super_record = 0,
+  shimano_nexus = 0,
+  shimano_alfine = 0
+) 
+
+new_cross_country
+
+set.seed(1234)
+model_07_boost_tree_xgboost &lt;- boost_tree(
+  mode = &quot;regression&quot;,
+  mtry = 30,
+  learn_rate = 0.25,
+  tree_depth = 7
+) %&gt;%
+  set_engine(&quot;xgboost&quot;) %&gt;%
+  fit(price ~ ., data = train_data %&gt;% select(-c(id:weight), -category_1, -c(category_3:gender)))
+
+model_07_boost_tree_xgboost %&gt;% calc_metrics(test_data)
+
+predict(model_01_linear_lm_simple, new_data = new_cross_country)
+predict(model_07_boost_tree_xgboost, new_data = new_cross_country)
+
+models_tbl &lt;- tibble(
+  model_id = str_c(&quot;Model 0&quot;, 1:2),
+  model = list(
+    model_01_linear_lm_simple,
+    model_07_boost_tree_xgboost
+  )
+)
+
+models_tbl
+
+predictions_new_cross_country_tbl &lt;- models_tbl %&gt;%
+  mutate(predictions = map(model, predict, new_data = new_cross_country)) %&gt;%
+  unnest(predictions) %&gt;%
+  mutate(category_2 = &quot;Cross-Country&quot;) %&gt;%
+  left_join(new_cross_country, by = &quot;category_2&quot;)
+
+predictions_new_cross_country_tbl
+
+
+g1 &lt;- geom_point(aes(y = .pred), color = &quot;red&quot;, alpha = 0.5,
+             data = predictions_new_cross_country_tbl) +
+  ggrepel::geom_text_repel(aes(label = model_id, y = .pred),
+                           size = 3,
+                           data = predictions_new_cross_country_tbl)</code></pre>
 
 
 

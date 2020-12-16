@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-11-05" />
+<meta name="date" content="2020-12-17" />
 
 <title>04 Performance Measures</title>
 
@@ -28,8 +28,6 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -84,6 +82,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -411,40 +410,345 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">04 Performance Measures</h1>
-<h4 class="date">2020-11-05</h4>
+<h4 class="date">2020-12-17</h4>
 
 </div>
 
 
-<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
-<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1">
-<h1><span class="header-section-number">1</span> My first post</h1>
-<p>Last compiled: 2020-12-13</p>
-<p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
-</div>
-</div>
-</div>
-<div id="my-second-post-note-the-order" class="section level1">
-<h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-12-13</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
-</div>
-<div id="adding-r-stuff" class="section level1">
-<h1><span class="header-section-number">3</span> Adding R stuff</h1>
-<p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
-<p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
-<pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
-hist(samples)</code></pre>
-<p><img src="04_perf_meas_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
-</div>
+<p>Performance Measures</p>
+<pre class="r"><code>library(tidymodels)
+library(magrittr)
+library(dplyr)
+library(sjmisc)
+library(magrittr)
+library(haven)
+library(sjlabelled)
+library(rsample)
+library(recipes)
+library(rstanarm)
+library(broom.mixed)
+library(h2o)
+library(stringr)
+library(data.table)
+library(cowplot)
+library(glue)
+
+product_backorders_tbl &lt;- read.csv(&quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/product_backorders.csv&quot;)
+
+product_backorders_tbl %&gt;% glimpse()
+
+data_split &lt;- initial_split(product_backorders_tbl, prop = 3/4)
+train_data &lt;- training(data_split)
+test_data  &lt;- testing(data_split)
+
+product_rec &lt;- 
+  recipe(went_on_backorder ~ ., data = train_data) %&gt;%  
+  step_dummy(all_nominal(), -all_outcomes()) %&gt;% 
+  step_zv(all_predictors()) %&gt;% 
+  prep()
+
+train_tbl &lt;- bake(product_rec, new_data = train_data)
+test_tbl  &lt;- bake(product_rec, new_data = test_data)
+
+
+h2o.init()
+
+split_h2o &lt;- h2o.splitFrame(as.h2o(train_tbl), ratios = c(0.85), seed = 1234)
+train_h2o &lt;- split_h2o[[1]]
+valid_h2o &lt;- split_h2o[[2]]
+test_h2o  &lt;- as.h2o(test_tbl)
+
+y &lt;- &quot;stop_auto_buy_Yes&quot;
+x &lt;- setdiff(names(train_h2o), y)
+
+
+automl_models_h2o &lt;- h2o.automl(
+  x = x,
+  y = y,
+  training_frame    = train_h2o,
+  validation_frame  = valid_h2o,
+  leaderboard_frame = test_h2o,
+  max_runtime_secs  = 30,
+  nfolds            = 5 
+)
+
+
+typeof(automl_models_h2o)
+slotNames(automl_models_h2o)
+automl_models_h2o@leaderboard 
+automl_models_h2o@leader
+
+h2o.getModel(&quot;DeepLearning_grid__1_AutoML_20200820_190823_model_1&quot;)
+
+extract_h2o_model_name_by_position &lt;- function(h2o_leaderboard, n = 1, verbose = T) {
+  
+  model_name &lt;- h2o_leaderboard %&gt;%
+    as.tibble() %&gt;%
+    slice(n) %&gt;%
+    pull(model_id)
+  
+  if (verbose) message(model_name)
+  
+  return(model_name)
+  
+}
+
+automl_models_h2o@leaderboard %&gt;% 
+  extract_h2o_model_name_by_position(6) %&gt;% 
+  h2o.getModel() %&gt;% 
+  h2o.saveModel(path = &quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/&quot;)
+
+data_transformed_tbl &lt;- automl_models_h2o@leaderboard %&gt;%
+  as_tibble() %&gt;%
+  select(-c(rmse, mse)) %&gt;% 
+  mutate(model_type = str_extract(model_id, &quot;[^_]+&quot;)) %&gt;%
+  slice(1:15) %&gt;% 
+  rownames_to_column(var = &quot;rowname&quot;) %&gt;%
+  mutate(
+    model_id   = as_factor(model_id) ,
+    model_type = as.factor(model_type)
+  ) %&gt;% 
+  pivot_longer(cols = -c(model_id, model_type, rowname), 
+               names_to = &quot;key&quot;, 
+               values_to = &quot;value&quot;, 
+               names_transform = list(key = forcats::fct_inorder)
+  ) 
+
+
+data_transformed_tbl %&gt;%
+  ggplot(aes(value, model_id, color = model_type)) +
+  geom_point(size = 3) +
+  geom_label(aes(label = round(value, 2), hjust = &quot;inward&quot;)) +
+  
+  labs(title = &quot;Leaderboard Metrics&quot;,
+       subtitle = paste0(&quot;Ordered by: &quot;, &quot;auc&quot;),
+       y = &quot;Model Postion, Model ID&quot;, x = &quot;&quot;) + 
+  theme(legend.position = &quot;bottom&quot;)
+
+
+
+
+deeplearning_h2o &lt;- h2o.loadModel(&quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_grid__1_AutoML_20201216_054400_model_1&quot;)
+
+deeplearning_h2o
+
+test_tbl
+
+h2o.performance(deeplearning_h2o, newdata = as.h2o(test_tbl))
+
+
+deeplearning_grid_01 &lt;- h2o.grid(
+  
+  algorithm = &quot;deeplearning&quot;,
+  
+  grid_id = &quot;deeplearning_grid_01&quot;,
+  
+  x = x,
+  y = y,
+  
+  training_frame   = train_h2o,
+  validation_frame = valid_h2o,
+  nfolds = 5,
+  
+  hyper_params = list(
+    hidden = list(c(10, 10, 10), c(50, 20, 10), c(20, 20, 20)),
+    epochs = c(10, 50, 100)
+  )
+)
+
+
+deeplearning_grid_01
+
+
+performance_h2o &lt;- h2o.performance(deeplearning_h2o, newdata = as.h2o(test_tbl))
+
+typeof(performance_h2o)
+performance_h2o %&gt;% slotNames()
+
+performance_h2o@metrics
+
+
+performance_tbl &lt;- performance_h2o %&gt;%
+  h2o.metric() %&gt;%
+  as.tibble() 
+
+performance_tbl %&gt;% 
+  glimpse()
+
+
+theme_new &lt;- theme(
+  legend.position  = &quot;bottom&quot;,
+  legend.key       = element_blank(),,
+  panel.background = element_rect(fill   = &quot;transparent&quot;),
+  panel.border     = element_rect(color = &quot;black&quot;, fill = NA, size = 0.5),
+  panel.grid.major = element_line(color = &quot;grey&quot;, size = 0.333)
+) 
+
+
+performance_tbl %&gt;%
+  filter(f1 == max(f1))
+
+performance_tbl %&gt;%
+  ggplot(aes(x = threshold)) +
+  geom_line(aes(y = precision), color = &quot;blue&quot;, size = 1) +
+  geom_line(aes(y = recall), color = &quot;red&quot;, size = 1) +
+  
+  geom_vline(xintercept = h2o.find_threshold_by_max_metric(performance_h2o, &quot;f1&quot;)) +
+  labs(title = &quot;Precision vs Recall&quot;, y = &quot;value&quot;) +
+  theme_new
+
+
+
+
+path &lt;- &quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_grid__1_AutoML_20201216_054400_model_1&quot;
+
+load_model_performance_metrics &lt;- function(path, test_tbl) {
+  
+  model_h2o &lt;- h2o.loadModel(path)
+  perf_h2o  &lt;- h2o.performance(model_h2o, newdata = as.h2o(test_tbl)) 
+  
+  perf_h2o %&gt;%
+    h2o.metric() %&gt;%
+    as_tibble() %&gt;%
+    mutate(auc = h2o.auc(perf_h2o)) %&gt;%
+    select(tpr, fpr, auc)
+  
+}
+
+load_model_performance_metrics &lt;- function(path, test_tbl) {
+  
+  model_h2o &lt;- h2o.loadModel(path)
+  perf_h2o  &lt;- h2o.performance(model_h2o, newdata = as.h2o(test_tbl)) 
+  
+  perf_h2o %&gt;%
+    h2o.metric() %&gt;%
+    as_tibble() %&gt;%
+    mutate(auc = h2o.auc(perf_h2o)) %&gt;%
+    select(tpr, fpr, auc)
+  
+}
+
+model_metrics_tbl &lt;- fs::dir_info(path = &quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/&quot;) %&gt;%
+  select(path) %&gt;%
+  mutate(metric = map(path, load_model_performance_metrics, test_tbl)) %&gt;%
+  unnest(cols = metric)
+
+
+model_metrics_tbl %&gt;%
+  mutate(
+    path = str_split(path, pattern = &quot;/&quot;, simplify = T)[,3] %&gt;% as_factor(),
+    auc  = auc %&gt;% round(3) %&gt;% as.character() %&gt;% as_factor()
+  ) %&gt;%
+  ggplot(aes(fpr, tpr, color = path, linetype = auc)) +
+  geom_line(size = 1) +
+  
+  geom_abline(color = &quot;red&quot;, linetype = &quot;dotted&quot;) +
+  
+  theme_new +
+  theme(
+    legend.direction = &quot;vertical&quot;,
+  ) +
+  labs(
+    title = &quot;ROC Plot&quot;,
+    subtitle = &quot;Performance of 3 Top Performing Models&quot;
+  )
+
+
+load_model_performance_metrics &lt;- function(path, test_tbl) {
+  
+  model_h2o &lt;- h2o.loadModel(path)
+  perf_h2o  &lt;- h2o.performance(model_h2o, newdata = as.h2o(test_tbl)) 
+  
+  perf_h2o %&gt;%
+    h2o.metric() %&gt;%
+    as_tibble() %&gt;%
+    mutate(auc = h2o.auc(perf_h2o)) %&gt;%
+    select(tpr, fpr, auc, precision, recall)
+  
+}
+
+model_metrics_tbl &lt;- fs::dir_info(path = &quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h2o_models/&quot;) %&gt;%
+  select(path) %&gt;%
+  mutate(metrics = map(path, load_model_performance_metrics, test_tbl)) %&gt;%
+  unnest(cols = metrics)
+
+model_metrics_tbl %&gt;%
+  mutate(
+    path = str_split(path, pattern = &quot;/&quot;, simplify = T)[,3] %&gt;% as_factor(),
+    auc  = auc %&gt;% round(3) %&gt;% as.character() %&gt;% as_factor()
+  ) %&gt;%
+  ggplot(aes(recall, precision, color = path, linetype = auc)) +
+  geom_line(size = 1) +
+  theme_new + 
+  theme(
+    legend.direction = &quot;vertical&quot;,
+  ) +
+  labs(
+    title = &quot;Precision vs Recall Plot&quot;,
+    subtitle = &quot;Performance of 3 Top Performing Models&quot;
+  )
+
+
+h2o_leaderboard &lt;- automl_models_h2o@leaderboard
+newdata &lt;- test_tbl
+order_by &lt;- &quot;auc&quot;
+max_models &lt;- 4
+size &lt;- 1
+  
+leaderboard_tbl &lt;- h2o_leaderboard %&gt;%
+    as_tibble() %&gt;%
+    slice(1:max_models)
+
+
+gain_lift_tbl &lt;- leaderboard_tbl %&gt;%
+  mutate(metrics = map(model_id, get_gain_lift, newdata_tbl)) %&gt;%
+  unnest(cols = metrics) %&gt;%
+  mutate(
+    model_id = as_factor(model_id) %&gt;% 
+      fct_reorder(!! order_by_expr, 
+                  .desc = ifelse(order_by == &quot;auc&quot;, TRUE, FALSE)),
+    auc  = auc %&gt;% 
+      round(3) %&gt;% 
+      as.character() %&gt;% 
+      as_factor() %&gt;% 
+      fct_reorder(as.numeric(model_id)),
+    logloss = logloss %&gt;% 
+      round(4) %&gt;% 
+      as.character() %&gt;% 
+      as_factor() %&gt;% 
+      fct_reorder(as.numeric(model_id))
+  ) %&gt;%
+  rename(
+    gain = cumulative_capture_rate,
+    lift = cumulative_lift
+  ) 
+
+gain_p &lt;- gain_lift_tbl %&gt;%
+  ggplot(aes(cumulative_data_fraction, gain, 
+             color = model_id, linetype = !! order_by_expr)) +
+  geom_line(size = size,) +
+  geom_segment(x = 0, y = 0, xend = 1, yend = 1, 
+               color = &quot;red&quot;, size = size, linetype = &quot;dotted&quot;) +
+  theme_new +
+  expand_limits(x = c(0, 1), y = c(0, 1)) +
+  labs(title = &quot;Gain&quot;,
+       x = &quot;Cumulative Data Fraction&quot;, y = &quot;Gain&quot;) +
+  theme(legend.position = &quot;none&quot;)
+
+lift_p &lt;- gain_lift_tbl %&gt;%
+  ggplot(aes(cumulative_data_fraction, lift, 
+             color = model_id, linetype = !! order_by_expr)) +
+  geom_line(size = size) +
+  geom_segment(x = 0, y = 1, xend = 1, yend = 1, 
+               color = &quot;red&quot;, size = size, linetype = &quot;dotted&quot;) +
+  theme_new +
+  expand_limits(x = c(0, 1), y = c(0, 1)) +
+  labs(title = &quot;Lift&quot;,
+       x = &quot;Cumulative Data Fraction&quot;, y = &quot;Lift&quot;) +
+  theme(legend.position = &quot;none&quot;) 
+
+
+p &lt;- cowplot::plot_grid(gain_p, lift_p, ncol = 2)</code></pre>
 
 
 
