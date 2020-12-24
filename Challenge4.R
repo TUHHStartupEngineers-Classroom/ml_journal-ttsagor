@@ -319,7 +319,7 @@ employee_attrition_tbl %>%
   select(Attrition, contains("employee"), contains("department"), contains("job")) %>%
   plot_ggpairs(Attrition) 
 
-#   3. Compensation features: HourlyRate, MonthlyIncome, StockOptionLevel 
+###   3. Compensation features: HourlyRate, MonthlyIncome, StockOptionLevel 
 employee_attrition_tbl %>%
   select(Attrition, contains("income"), contains("rate"), contains("salary"), contains("stock")) %>%
   plot_ggpairs(Attrition)

@@ -77,9 +77,13 @@ automl_leader %>% glimpse()
 
 h2o.init()
 
-automl_leader <- h2o.loadModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_1_AutoML_20201216_080247")
+automl_leader <- h2o.loadModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_4_AutoML_20201216_195855")
 automl_leader
 
+automl_leader@allparameters$x
+automl_leader@allparameters$y
+
+setdiff( automl_leader@allparameters$x, colnames(test_tbl) )
 
 predictions_tbl <- automl_leader %>% 
   h2o.predict(newdata = as.h2o(test_tbl)) %>%
