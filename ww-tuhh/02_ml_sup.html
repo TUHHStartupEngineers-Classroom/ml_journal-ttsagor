@@ -429,7 +429,7 @@ library(rpart.plot)
 library(modeldata)
 
 # Data exploration
-bike_data_tbl &lt;- readRDS(&quot;raw_data/bike_orderlines.rds&quot;)
+bike_data_tbl &lt;- readRDS(&quot;C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/raw_data/bike_orderlines.rds&quot;)
 model_sales_tbl &lt;- bike_data_tbl %&gt;%
   select(total_price, model, category_2, frame_material) %&gt;%
   
@@ -508,13 +508,13 @@ bike_features_tbl %&gt;% distinct(category_2)</code></pre>
 split_obj %&gt;% training() %&gt;% distinct(category_2)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["category_2"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Race"},{"1":"Endurance"},{"1":"E-Road"},{"1":"Cyclocross"},{"1":"Triathlon Bike"},{"1":"Fat Bikes"},{"1":"Cross-Country"},{"1":"Adventure"},{"1":"All-Road"},{"1":"E-Gravel"},{"1":"Trail"},{"1":"E-Mountain"},{"1":"Downhill"},{"1":"Dirt Jump"},{"1":"Enduro"},{"1":"E-Trekking"},{"1":"E-City"},{"1":"E-Fitness"},{"1":"City"},{"1":"Touring"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["category_2"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Race"},{"1":"Endurance"},{"1":"E-Road"},{"1":"Cyclocross"},{"1":"Triathlon Bike"},{"1":"Fat Bikes"},{"1":"Cross-Country"},{"1":"Adventure"},{"1":"All-Road"},{"1":"E-Gravel"},{"1":"Trail"},{"1":"E-Mountain"},{"1":"Downhill"},{"1":"Dirt Jump"},{"1":"Enduro"},{"1":"E-City"},{"1":"E-Trekking"},{"1":"E-Fitness"},{"1":"City"},{"1":"Touring"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>split_obj %&gt;% testing() %&gt;% distinct(category_2)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["category_2"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Race"},{"1":"Endurance"},{"1":"Cyclocross"},{"1":"Triathlon Bike"},{"1":"Fat Bikes"},{"1":"Cross-Country"},{"1":"All-Road"},{"1":"E-Gravel"},{"1":"Trail"},{"1":"Downhill"},{"1":"E-Mountain"},{"1":"Dirt Jump"},{"1":"Enduro"},{"1":"E-City"},{"1":"E-Fitness"},{"1":"Touring"},{"1":"City"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["category_2"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Race"},{"1":"Endurance"},{"1":"Cyclocross"},{"1":"Triathlon Bike"},{"1":"Cross-Country"},{"1":"All-Road"},{"1":"E-Gravel"},{"1":"Adventure"},{"1":"Trail"},{"1":"E-Mountain"},{"1":"Enduro"},{"1":"E-Trekking"},{"1":"E-City"},{"1":"City"},{"1":"Touring"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>train_tbl &lt;- training(split_obj)
@@ -580,51 +580,51 @@ bike_fit</code></pre>
 ## 
 ## Coefficients:
 ##                (Intercept)                          id  
-##                  268.07785                     1.29323  
+##                  2.007e+16                   9.586e+12  
 ##                     weight                       price  
-##                  -36.87023                     0.07543  
+##                 -9.502e+14                   6.949e+10  
 ##           shimano_dura_ace             shimano_ultegra  
-##                  -84.54477                   -26.91056  
+##                  4.216e+14                   2.608e+14  
 ##                shimano_105              shimano_tiagra  
-##                   27.74156                    54.25652  
+##                 -1.162e+14                  -2.543e+15  
 ##              shimano_deore                 shimano_slx  
-##                  105.43975                    10.27927  
+##                 -6.931e+14                  -3.342e+15  
 ##                shimano_grx                  Shimano_xt  
-##                    6.22076                    15.40714  
+##                 -1.751e+15                  -2.466e+15  
 ##              Shimano_saint                    SRAM_red  
-##                  -67.11730                  -279.12064  
-##                 SRAM_force                  SRAM_rival  
-##                 -120.74858                   -14.48986  
-##                  SRAM_apex                    SRAM_xx1  
-##                   -7.56054                  -142.98164  
-##                   SRAM_x01                     SRAM_gx  
-##                  -82.45155                    28.61991  
-##                    SRAM_nx                     SRAM_sx  
-##                   31.65639                    69.18870  
-##         Campagnolo_potenza               shimano_nexus  
-##                  -70.26798                   -13.81199  
-##             shimano_alfine           category_1_Gravel  
-##                  -70.48343                  -308.98903  
-##   category_1_Hybrid...City         category_1_Mountain  
-##                 -298.87073                  -176.69927  
-##            category_1_Road         category_2_All.Road  
-##                 -174.66934                   174.19509  
-##            category_2_City    category_2_Cross.Country  
-##                  -42.60070                   -34.07135  
-##      category_2_Cyclocross        category_2_Dirt.Jump  
-##                   24.78595                   -35.57695  
-##        category_2_Downhill           category_2_E.City  
-##                   64.66134                   -32.70831  
-##       category_2_E.Fitness         category_2_E.Gravel  
-##                 -302.11569                  -120.48999  
-##      category_2_E.Mountain           category_2_E.Road  
-##                   50.99133                   -26.11634  
-##      category_2_E.Trekking        category_2_Endurance  
-##                         NA                    23.93113  
-##          category_2_Enduro        category_2_Fat.Bikes  
-##                  -60.81353                   140.20140  
-##            category_2_Race          category_2_Touring  
-##                  -32.08050                          NA  
+##                  1.012e+16                  -1.853e+15  
+##                 SRAM_force                   SRAM_apex  
+##                  1.426e+15                  -2.992e+15  
+##                   SRAM_xx1                    SRAM_x01  
+##                 -8.109e+14                  -6.677e+13  
+##                    SRAM_gx                     SRAM_nx  
+##                  5.567e+14                   8.965e+14  
+##                    SRAM_sx     Campagnolo_super_record  
+##                  2.374e+15                   6.275e+14  
+##              shimano_nexus              shimano_alfine  
+##                  4.755e+14                   2.541e+14  
+##          category_1_Gravel    category_1_Hybrid...City  
+##                 -1.163e+16                  -1.140e+16  
+##        category_1_Mountain             category_1_Road  
+##                 -6.944e+15                  -1.158e+16  
+##        category_2_All.Road             category_2_City  
+##                  1.221e+15                  -2.919e+15  
+##   category_2_Cross.Country       category_2_Cyclocross  
+##                 -1.881e+15                   1.578e+15  
+##       category_2_Dirt.Jump         category_2_Downhill  
+##                 -5.261e+15                  -4.571e+15  
+##          category_2_E.City        category_2_E.Fitness  
+##                  9.864e+14                  -1.082e+16  
+##        category_2_E.Gravel       category_2_E.Mountain  
+##                 -2.258e+15                   8.886e+14  
+##          category_2_E.Road       category_2_E.Trekking  
+##                 -9.259e+15                          NA  
+##       category_2_Endurance           category_2_Enduro  
+##                 -1.053e+15                  -8.533e+14  
+##       category_2_Fat.Bikes             category_2_Race  
+##                  4.240e+14                   1.397e+15  
+##         category_2_Touring            category_2_Trail  
+##                         NA                          NA  
 ## 
 ## ...
 ## and 34 more lines.</code></pre>
@@ -633,7 +633,7 @@ bike_fit</code></pre>
   tidy()</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"268.07784741","3":"2.477962e+06","4":"1.081848e-04","5":"0.9999137"},{"1":"id","2":"1.29322803","3":"3.948400e+03","4":"3.275322e-04","5":"0.9997387"},{"1":"weight","2":"-36.87023405","3":"7.928497e+04","4":"-4.650343e-04","5":"0.9996290"},{"1":"price","2":"0.07543143","3":"6.670501e+01","4":"1.130821e-03","5":"0.9990977"},{"1":"shimano_dura_ace","2":"-84.54476968","3":"5.003787e+05","4":"-1.689616e-04","5":"0.9998652"},{"1":"shimano_ultegra","2":"-26.91055837","3":"4.853655e+05","4":"-5.544390e-05","5":"0.9999558"},{"1":"shimano_105","2":"27.74156240","3":"4.713315e+05","4":"5.885786e-05","5":"0.9999530"},{"1":"shimano_tiagra","2":"54.25652029","3":"5.105414e+05","4":"1.062725e-04","5":"0.9999152"},{"1":"shimano_deore","2":"105.43975482","3":"2.958996e+05","4":"3.563363e-04","5":"0.9997157"},{"1":"shimano_slx","2":"10.27927197","3":"1.809725e+05","4":"5.680020e-05","5":"0.9999547"},{"1":"shimano_grx","2":"6.22075913","3":"3.786317e+05","4":"1.642958e-05","5":"0.9999869"},{"1":"Shimano_xt","2":"15.40713572","3":"3.309433e+05","4":"4.655522e-05","5":"0.9999629"},{"1":"Shimano_saint","2":"-67.11730175","3":"6.788573e+05","4":"-9.886805e-05","5":"0.9999211"},{"1":"SRAM_red","2":"-279.12064239","3":"5.119529e+05","4":"-5.452076e-04","5":"0.9995650"},{"1":"SRAM_force","2":"-120.74858413","3":"4.313736e+05","4":"-2.799165e-04","5":"0.9997767"},{"1":"SRAM_rival","2":"-14.48986427","3":"5.712636e+05","4":"-2.536458e-05","5":"0.9999798"},{"1":"SRAM_apex","2":"-7.56054418","3":"4.959393e+05","4":"-1.524490e-05","5":"0.9999878"},{"1":"SRAM_xx1","2":"-142.98164089","3":"1.933742e+05","4":"-7.394039e-04","5":"0.9994100"},{"1":"SRAM_x01","2":"-82.45154728","3":"1.184533e+05","4":"-6.960680e-04","5":"0.9994446"},{"1":"SRAM_gx","2":"28.61990601","3":"3.988011e+05","4":"7.176486e-05","5":"0.9999427"},{"1":"SRAM_nx","2":"31.65639116","3":"1.285276e+05","4":"2.463003e-04","5":"0.9998035"},{"1":"SRAM_sx","2":"69.18870207","3":"3.755575e+05","4":"1.842293e-04","5":"0.9998530"},{"1":"Campagnolo_potenza","2":"-70.26798216","3":"5.884293e+05","4":"-1.194162e-04","5":"0.9999047"},{"1":"shimano_nexus","2":"-13.81198715","3":"3.091845e+05","4":"-4.467232e-05","5":"0.9999644"},{"1":"shimano_alfine","2":"-70.48342790","3":"2.550438e+05","4":"-2.763582e-04","5":"0.9997795"},{"1":"category_1_Gravel","2":"-308.98903197","3":"1.130171e+06","4":"-2.734002e-04","5":"0.9997819"},{"1":"category_1_Hybrid...City","2":"-298.87073322","3":"8.229540e+05","4":"-3.631682e-04","5":"0.9997102"},{"1":"category_1_Mountain","2":"-176.69927086","3":"6.752174e+05","4":"-2.616924e-04","5":"0.9997912"},{"1":"category_1_Road","2":"-174.66934363","3":"1.467805e+06","4":"-1.190004e-04","5":"0.9999051"},{"1":"category_2_All.Road","2":"174.19509194","3":"3.722547e+05","4":"4.679460e-04","5":"0.9996266"},{"1":"category_2_City","2":"-42.60070349","3":"5.879662e+05","4":"-7.245435e-05","5":"0.9999422"},{"1":"category_2_Cross.Country","2":"-34.07134820","3":"2.971255e+05","4":"-1.146699e-04","5":"0.9999085"},{"1":"category_2_Cyclocross","2":"24.78595424","3":"3.024081e+05","4":"8.196195e-05","5":"0.9999346"},{"1":"category_2_Dirt.Jump","2":"-35.57695195","3":"4.438681e+05","4":"-8.015207e-05","5":"0.9999360"},{"1":"category_2_Downhill","2":"64.66133703","3":"5.486808e+05","4":"1.178487e-04","5":"0.9999060"},{"1":"category_2_E.City","2":"-32.70831041","3":"2.671860e+05","4":"-1.224178e-04","5":"0.9999023"},{"1":"category_2_E.Fitness","2":"-302.11569019","3":"5.697531e+05","4":"-5.302572e-04","5":"0.9995769"},{"1":"category_2_E.Gravel","2":"-120.48998587","3":"6.623040e+05","4":"-1.819255e-04","5":"0.9998548"},{"1":"category_2_E.Mountain","2":"50.99133302","3":"2.627123e+05","4":"1.940957e-04","5":"0.9998451"},{"1":"category_2_E.Road","2":"-26.11633502","3":"1.184097e+06","4":"-2.205591e-05","5":"0.9999824"},{"1":"category_2_E.Trekking","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Endurance","2":"23.93113157","3":"2.855980e+05","4":"8.379306e-05","5":"0.9999331"},{"1":"category_2_Enduro","2":"-60.81353021","3":"4.400756e+05","4":"-1.381888e-04","5":"0.9998897"},{"1":"category_2_Fat.Bikes","2":"140.20140156","3":"5.074039e+05","4":"2.763112e-04","5":"0.9997795"},{"1":"category_2_Race","2":"-32.08049912","3":"2.508400e+05","4":"-1.278923e-04","5":"0.9998980"},{"1":"category_2_Touring","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Trail","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Triathlon.Bike","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Commuter","2":"99.54805521","3":"5.190802e+05","4":"1.917778e-04","5":"0.9998470"},{"1":"category_3_Dude","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Endurace","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Endurace.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Exceed","2":"139.52320265","3":"2.667633e+05","4":"5.230225e-04","5":"0.9995827"},{"1":"category_3_Grail","2":"-108.08216258","3":"7.106575e+05","4":"-1.520876e-04","5":"0.9998787"},{"1":"category_3_Grail.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Grand.Canyon","2":"65.73515184","3":"3.162948e+05","4":"2.078287e-04","5":"0.9998342"},{"1":"category_3_Grand.Canyon.ON","2":"-46.75919477","3":"4.523861e+05","4":"-1.033613e-04","5":"0.9999175"},{"1":"category_3_Inflite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Lux","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Neuron","2":"5.73126571","3":"4.245147e+05","4":"1.350075e-05","5":"0.9999892"},{"1":"category_3_Neuron.ON","2":"-50.46970997","3":"2.620107e+05","4":"-1.926246e-04","5":"0.9998463"},{"1":"category_3_Pathlite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Pathlite.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Precede.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Roadlite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Roadlite.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Sender","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Spectral","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Spectral.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Speedmax","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Stitched","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Strive","2":"45.25445562","3":"2.298593e+05","4":"1.968790e-04","5":"0.9998429"},{"1":"category_3_Torque","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Ultimate","2":"-19.53050855","3":"2.542235e+05","4":"-7.682417e-05","5":"0.9999387"},{"1":"gender_unisex","2":"22.08095750","3":"5.249566e+04","4":"4.206244e-04","5":"0.9996644"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"2.007448e+16","3":"4.208724e+08","4":"47697296.4","5":"0"},{"1":"id","2":"9.586339e+12","3":"1.509389e+06","4":"6351137.0","5":"0"},{"1":"weight","2":"-9.501792e+14","3":"1.017145e+07","4":"-93416326.5","5":"0"},{"1":"price","2":"6.948980e+10","3":"8.320585e+03","4":"8351553.1","5":"0"},{"1":"shimano_dura_ace","2":"4.216189e+14","3":"7.587953e+07","4":"5556425.1","5":"0"},{"1":"shimano_ultegra","2":"2.607693e+14","3":"6.681494e+07","4":"3902859.4","5":"0"},{"1":"shimano_105","2":"-1.161725e+14","3":"6.534384e+07","4":"-1777864.8","5":"0"},{"1":"shimano_tiagra","2":"-2.543274e+15","3":"7.599653e+07","4":"-33465662.6","5":"0"},{"1":"shimano_deore","2":"-6.931216e+14","3":"4.556002e+07","4":"-15213374.8","5":"0"},{"1":"shimano_slx","2":"-3.342441e+15","3":"5.932621e+07","4":"-56340042.9","5":"0"},{"1":"shimano_grx","2":"-1.750528e+15","3":"9.148160e+07","4":"-19135296.4","5":"0"},{"1":"Shimano_xt","2":"-2.465599e+15","3":"4.653587e+07","4":"-52982758.1","5":"0"},{"1":"Shimano_saint","2":"1.011893e+16","3":"8.572683e+07","4":"118036878.9","5":"0"},{"1":"SRAM_red","2":"-1.852913e+15","3":"8.321656e+07","4":"-22266155.4","5":"0"},{"1":"SRAM_force","2":"1.425517e+15","3":"7.165466e+07","4":"19894273.4","5":"0"},{"1":"SRAM_apex","2":"-2.991619e+15","3":"7.148538e+07","4":"-41849388.2","5":"0"},{"1":"SRAM_xx1","2":"-8.108778e+14","3":"3.921778e+07","4":"-20676282.5","5":"0"},{"1":"SRAM_x01","2":"-6.677380e+13","3":"2.517046e+07","4":"-2652863.9","5":"0"},{"1":"SRAM_gx","2":"5.566944e+14","3":"2.732471e+07","4":"20373295.8","5":"0"},{"1":"SRAM_nx","2":"8.964532e+14","3":"4.381922e+07","4":"20457991.7","5":"0"},{"1":"SRAM_sx","2":"2.373931e+15","3":"7.326262e+07","4":"32403040.0","5":"0"},{"1":"Campagnolo_super_record","2":"6.274506e+14","3":"9.162753e+07","4":"6847839.0","5":"0"},{"1":"shimano_nexus","2":"4.755001e+14","3":"7.353623e+07","4":"6466201.3","5":"0"},{"1":"shimano_alfine","2":"2.541239e+14","3":"7.343140e+07","4":"3460697.6","5":"0"},{"1":"category_1_Gravel","2":"-1.162804e+16","3":"1.903374e+08","4":"-61091691.5","5":"0"},{"1":"category_1_Hybrid...City","2":"-1.139807e+16","3":"1.315210e+08","4":"-86663519.8","5":"0"},{"1":"category_1_Mountain","2":"-6.944452e+15","3":"1.308011e+08","4":"-53091701.8","5":"0"},{"1":"category_1_Road","2":"-1.158271e+16","3":"2.982692e+08","4":"-38833070.8","5":"0"},{"1":"category_2_All.Road","2":"1.221337e+15","3":"1.446660e+08","4":"8442459.0","5":"0"},{"1":"category_2_City","2":"-2.918557e+15","3":"6.966808e+07","4":"-41892306.9","5":"0"},{"1":"category_2_Cross.Country","2":"-1.880521e+15","3":"6.794529e+07","4":"-27676993.5","5":"0"},{"1":"category_2_Cyclocross","2":"1.577864e+15","3":"4.531182e+07","4":"34822341.8","5":"0"},{"1":"category_2_Dirt.Jump","2":"-5.261409e+15","3":"5.474499e+07","4":"-96107588.6","5":"0"},{"1":"category_2_Downhill","2":"-4.571478e+15","3":"6.175429e+07","4":"-74026895.1","5":"0"},{"1":"category_2_E.City","2":"9.864399e+14","3":"6.715361e+07","4":"14689304.8","5":"0"},{"1":"category_2_E.Fitness","2":"-1.082399e+16","3":"1.096748e+08","4":"-98691692.8","5":"0"},{"1":"category_2_E.Gravel","2":"-2.258313e+15","3":"2.059149e+08","4":"-10967216.5","5":"0"},{"1":"category_2_E.Mountain","2":"8.885835e+14","3":"7.549315e+07","4":"11770385.0","5":"0"},{"1":"category_2_E.Road","2":"-9.259392e+15","3":"3.160653e+08","4":"-29295818.8","5":"0"},{"1":"category_2_E.Trekking","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Endurance","2":"-1.052744e+15","3":"5.379578e+07","4":"-19569266.3","5":"0"},{"1":"category_2_Enduro","2":"-8.533116e+14","3":"5.032240e+07","4":"-16956895.0","5":"0"},{"1":"category_2_Fat.Bikes","2":"4.239773e+14","3":"1.434273e+08","4":"2956042.2","5":"0"},{"1":"category_2_Race","2":"1.397208e+15","3":"7.463301e+07","4":"18721038.6","5":"0"},{"1":"category_2_Touring","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Trail","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_2_Triathlon.Bike","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Commuter","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Commuter.ON","2":"-1.094524e+16","3":"7.942168e+07","4":"-137811785.7","5":"0"},{"1":"category_3_Dude","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Endurace","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Endurace.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Exceed","2":"-2.768876e+14","3":"7.868227e+07","4":"-3519060.2","5":"0"},{"1":"category_3_Grail","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Grail.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Grand.Canyon","2":"-3.759742e+15","3":"8.829591e+07","4":"-42581160.7","5":"0"},{"1":"category_3_Grand.Canyon.ON","2":"-6.038190e+15","3":"1.111391e+08","4":"-54329999.4","5":"0"},{"1":"category_3_Inflite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Lux","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Neuron","2":"-1.246555e+15","3":"4.484824e+07","4":"-27794961.1","5":"0"},{"1":"category_3_Neuron.ON","2":"-5.382492e+15","3":"6.545994e+07","4":"-82225739.7","5":"0"},{"1":"category_3_Pathlite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Pathlite.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Precede.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Roadlite","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Roadlite.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Sender","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Spectral","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Spectral.ON","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Speedmax","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Stitched","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Strive","2":"-4.546848e+13","3":"4.604581e+07","4":"-987461.8","5":"0"},{"1":"category_3_Torque","2":"NA","3":"NA","4":"NA","5":"NA"},{"1":"category_3_Ultimate","2":"-1.214993e+15","3":"9.702226e+07","4":"-12522823.3","5":"0"},{"1":"gender_unisex","2":"3.363697e+14","3":"1.347741e+07","4":"24958041.1","5":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>bike_pred &lt;- 
@@ -651,7 +651,7 @@ bike_pred %&gt;%
 <pre class="r"><code>bike_pred</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".pred_aluminium"],"name":[1],"type":["dbl"],"align":["right"]},{"label":[".pred_carbon"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["frame_material"],"name":[3],"type":["fct"],"align":["left"]},{"label":["category_2"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"3.162585e-07","2":"9.999997e-01","3":"carbon","4":"Race"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"1.938449e-13","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cyclocross"},{"1":"1.886721e-01","2":"8.113279e-01","3":"carbon","4":"Cyclocross"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.489076e-11","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Fat Bikes"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Gravel"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"Downhill"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Mountain"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Mountain"},{"1":"1.000000e+00","2":"2.819710e-12","3":"aluminium","4":"Dirt Jump"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Dirt Jump"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"Enduro"},{"1":"NA","2":"NA","3":"aluminium","4":"E-City"},{"1":"NA","2":"NA","3":"aluminium","4":"E-City"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"E-Fitness"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"E-Fitness"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Touring"},{"1":"1.000000e+00","2":"4.590924e-10","3":"aluminium","4":"Touring"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"City"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"City"},{"1":"1.000000e+00","2":"4.767915e-13","3":"aluminium","4":"City"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"City"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".pred_aluminium"],"name":[1],"type":["dbl"],"align":["right"]},{"label":[".pred_carbon"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["frame_material"],"name":[3],"type":["fct"],"align":["left"]},{"label":["category_2"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Endurance"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Endurance"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cyclocross"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Triathlon Bike"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Race"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Gravel"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"All-Road"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Adventure"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"E-Mountain"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"Cross-Country"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"Trail"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"Trail"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Trail"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Mountain"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-Mountain"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"Enduro"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"E-Trekking"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"E-Trekking"},{"1":"2.220446e-16","2":"1.000000e+00","3":"aluminium","4":"E-Trekking"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"E-City"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"City"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Touring"},{"1":"1.000000e+00","2":"2.220446e-16","3":"aluminium","4":"Touring"},{"1":"2.220446e-16","2":"1.000000e+00","3":"carbon","4":"City"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>roc_al &lt;- bike_pred %&gt;% 
@@ -659,7 +659,7 @@ bike_pred %&gt;%
 roc_al</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"roc_auc","2":"binary","3":"0.9238095"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"roc_auc","2":"binary","3":"0.8333333"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>roc_car &lt;- bike_pred %&gt;% 
@@ -667,7 +667,7 @@ roc_al</code></pre>
 roc_car</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"roc_auc","2":"binary","3":"0.07619048"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"roc_auc","2":"binary","3":"0.1666667"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code># Evaluation
@@ -679,26 +679,26 @@ model_01_linear_lm_simple &lt;- linear_reg(mode = &quot;regression&quot;) %&gt;%
 model_01_linear_lm_simple</code></pre>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  10ms 
+## Fit time:  0ms 
 ## 
 ## Call:
 ## stats::lm(formula = price ~ category_2 + frame_material, data = data)
 ## 
 ## Coefficients:
 ##              (Intercept)        category_2All-Road            category_2City  
-##                   2170.6                    -696.1                   -1200.1  
+##                   2136.2                    -354.9                   -1210.8  
 ##  category_2Cross-Country      category_2Cyclocross       category_2Dirt Jump  
-##                    192.6                    -661.1                    -951.6  
+##                    401.1                    -162.5                    -870.6  
 ##       category_2Downhill          category_2E-City       category_2E-Fitness  
-##                    451.7                     685.0                    1438.4  
+##                   1565.2                     923.1                     906.1  
 ##       category_2E-Gravel      category_2E-Mountain          category_2E-Road  
-##                   1351.7                    1126.6                     748.4  
+##                   1370.0                    1212.1                     782.8  
 ##     category_2E-Trekking       category_2Endurance          category_2Enduro  
-##                   1154.1                    -587.1                     165.8  
+##                   1050.3                    -708.2                     765.1  
 ##      category_2Fat Bikes            category_2Race         category_2Touring  
-##                  -1705.0                     589.6                   -1031.6  
+##                  -1215.0                     807.8                    -963.9  
 ##          category_2Trail  category_2Triathlon Bike      frame_materialcarbon  
-##                   -334.3                     283.2                    1673.4</code></pre>
+##                   -192.8                     499.2                    1462.8</code></pre>
 <pre class="r"><code>test_data &lt;- test_data %&gt;% filter(category_2 != &quot;Fat Bikes&quot;)
 
 yards &lt;- model_01_linear_lm_simple %&gt;%
@@ -709,7 +709,7 @@ yards &lt;- model_01_linear_lm_simple %&gt;%
 yards</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"rmse","2":"standard","3":"1605.295380"},{"1":"rsq","2":"standard","3":"0.415567"},{"1":"mae","2":"standard","3":"1191.565655"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".metric"],"name":[1],"type":["chr"],"align":["left"]},{"label":[".estimator"],"name":[2],"type":["chr"],"align":["left"]},{"label":[".estimate"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"rmse","2":"standard","3":"1393.8590559"},{"1":"rsq","2":"standard","3":"0.4956122"},{"1":"mae","2":"standard","3":"985.6932601"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>g1 &lt;- bike_features_tbl %&gt;% 
@@ -769,7 +769,7 @@ new_race_alu</code></pre>
 <pre class="r"><code>predict(model_01_linear_lm_simple, new_data = new_race_alu)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".pred"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"2760.162"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".pred"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"2944.009"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>models_tbl &lt;- tibble(
@@ -793,7 +793,7 @@ models_tbl</code></pre>
 predictions_new_race_alu_tbl</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["model_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["model.x"],"name":[2],"type":["list"],"align":["right"]},{"label":[".pred"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["category_2"],"name":[4],"type":["chr"],"align":["left"]},{"label":["model.y"],"name":[5],"type":["chr"],"align":["left"]},{"label":["frame_material"],"name":[6],"type":["chr"],"align":["left"]},{"label":["shimano_dura_ace"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["shimano_ultegra"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["shimano_105"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["shimano_tiagra"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Shimano_sora"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["shimano_deore"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["shimano_slx"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["shimano_grx"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["Shimano_xt"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["Shimano_xtr"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["Shimano_saint"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["SRAM_red"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["SRAM_force"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["SRAM_rival"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["SRAM_apex"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["SRAM_xx1"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["SRAM_x01"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["SRAM_gx"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["SRAM_nx"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["SRAM_sx"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["Campagnolo_potenza"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["Campagnolo_super_record"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["shimano_nexus"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["shimano_alfine"],"name":[30],"type":["dbl"],"align":["right"]}],"data":[{"1":"Model 01","2":"<S3: _lm>","3":"2760.162","4":"Race","5":"Exceed AL SL new","6":"aluminium","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"1","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["model_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["model.x"],"name":[2],"type":["list"],"align":["right"]},{"label":[".pred"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["category_2"],"name":[4],"type":["chr"],"align":["left"]},{"label":["model.y"],"name":[5],"type":["chr"],"align":["left"]},{"label":["frame_material"],"name":[6],"type":["chr"],"align":["left"]},{"label":["shimano_dura_ace"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["shimano_ultegra"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["shimano_105"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["shimano_tiagra"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Shimano_sora"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["shimano_deore"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["shimano_slx"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["shimano_grx"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["Shimano_xt"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["Shimano_xtr"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["Shimano_saint"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["SRAM_red"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["SRAM_force"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["SRAM_rival"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["SRAM_apex"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["SRAM_xx1"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["SRAM_x01"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["SRAM_gx"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["SRAM_nx"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["SRAM_sx"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["Campagnolo_potenza"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["Campagnolo_super_record"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["shimano_nexus"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["shimano_alfine"],"name":[30],"type":["dbl"],"align":["right"]}],"data":[{"1":"Model 01","2":"<S3: _lm>","3":"2944.009","4":"Race","5":"Exceed AL SL new","6":"aluminium","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"1","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>g2 &lt;- g1 +

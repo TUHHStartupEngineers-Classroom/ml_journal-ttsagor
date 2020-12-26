@@ -46,8 +46,8 @@ process_hr_data_readable <- function(data, definitions_tbl) {
 }
 
 # Load Data
-employee_attrition_tbl <- read_csv("datasets-1067-1925-WA_Fn-UseC_-HR-Employee-Attrition.csv")
-definitions_raw_tbl    <- read_excel("data_definitions.xlsx", sheet = 1, col_names = FALSE)
+employee_attrition_tbl <- read_csv("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/datasets-1067-1925-WA_Fn-UseC_-HR-Employee-Attrition.csv")
+definitions_raw_tbl    <- read_excel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/data_definitions.xlsx", sheet = 1, col_names = FALSE)
 
 
 

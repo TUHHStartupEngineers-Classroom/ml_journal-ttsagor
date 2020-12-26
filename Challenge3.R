@@ -11,7 +11,7 @@ library(rpart.plot)
 library(modeldata)
 
 # Data exploration
-bike_data_tbl <- readRDS("raw_data/bike_orderlines.rds")
+bike_data_tbl <- readRDS("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/raw_data/bike_orderlines.rds")
 model_sales_tbl <- bike_data_tbl %>%
   select(total_price, model, category_2, frame_material) %>%
   

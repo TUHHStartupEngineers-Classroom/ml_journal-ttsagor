@@ -5,7 +5,7 @@ library(sjmisc)
 library(magrittr)
 library(haven)
 library(sjlabelled)
-employee_attrition_tbl <- read.csv("HR-Employee-Attrition.csv")
+employee_attrition_tbl <- read.csv("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/HR-Employee-Attrition.csv")
 
 dept_job_role_tbl <- employee_attrition_tbl %>%
   select(EmployeeNumber, Department, JobRole, PerformanceRating, Attrition)
