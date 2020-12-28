@@ -15,10 +15,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 ```
-
-```{r error=TRUE, code=readLines("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/Challenge4.R")}
-```
-
 # Automated Machine Learning with H20 (I)
 1. Compensation Features
 What can you deduce about the interaction between Monthly Income and Attrition?

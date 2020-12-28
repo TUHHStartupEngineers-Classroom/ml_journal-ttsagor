@@ -35,7 +35,7 @@ process_hr_data_readable <- function(data, definitions_tbl) {
     fill(...1, .direction = "down") %>%
     filter(!is.na(...2)) %>%
     separate(...2, into = c("key", "value"), sep = " '", remove = TRUE) %>%
-    rename(column_name = ...1) %>%
+    dplyr::rename(column_name = ...1) %>%
     mutate(key = as.numeric(key)) %>%
     mutate(value = value %>% str_replace(pattern = "'", replacement = "")) %>%
     split(.$column_name) %>%

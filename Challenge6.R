@@ -148,7 +148,7 @@ deeplearning_grid_01_model_1 %>% h2o.auc(train = T, valid = T, xval = T)
 deeplearning_grid_01_model_1 %>%
   h2o.performance(newdata = as.h2o(test_tbl))
 
-deeplearning_grid_01_model_1 %>%h2o.saveModel(path = "C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/")
+# deeplearning_grid_01_model_1 %>%h2o.saveModel(path = "C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/")
 
 
 
@@ -235,18 +235,14 @@ model_metrics_tbl <- fs::dir_info(path = "C:/Users/sagor/Documents/GitHub/ml_jou
   mutate(metrics = map(path, load_model_performance_metrics, test_tbl)) %>%
   unnest(cols = metrics)
 
-
-
 model_metrics_tbl %>%
   mutate(
-    # Extract the model names
     path = str_split(path, pattern = "/", simplify = T)[,3] %>% as_factor(),
     auc  = auc %>% round(3) %>% as.character() %>% as_factor()
   ) %>%
   ggplot(aes(fpr, tpr, color = path, linetype = auc)) +
   geom_line(size = 1) +
   
-  # just for demonstration purposes
   geom_abline(color = "red", linetype = "dotted") +
   
   theme_new +
@@ -297,6 +293,16 @@ model_metrics_tbl %>%
     subtitle = "Performance of 3 Top Performing Models"
   )
 
+stacked_ensemble_h2o <- h2o.loadModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_1_AutoML_20201224_205832")
+stacked_ensemble_h2o
+
+predictions <- h2o.predict(stacked_ensemble_h2o, newdata = as.h2o(test_tbl))
+
+typeof(predictions)
+
+predictions_tbl <- predictions %>% as_tibble()
+predictions_tbl
+
 
 # Gain & Lift
 ranked_predictions_tbl <- predictions_tbl %>%
@@ -346,7 +352,7 @@ gain_transformed_tbl <- gain_lift_tbl %>%
   select(group, cumulative_data_fraction, cumulative_capture_rate, cumulative_lift) %>%
   select(-contains("lift")) %>%
   mutate(baseline = cumulative_data_fraction) %>%
-  rename(gain     = cumulative_capture_rate) %>%
+  dplyr::rename(gain     = cumulative_capture_rate) %>%
   # prepare the data for the plotting (for the color and group aesthetics)
   pivot_longer(cols = c(gain, baseline), values_to = "value", names_to = "key")
 
@@ -366,7 +372,7 @@ lift_transformed_tbl <- gain_lift_tbl %>%
   select(group, cumulative_data_fraction, cumulative_capture_rate, cumulative_lift) %>%
   select(-contains("capture")) %>%
   mutate(baseline = 1) %>%
-  rename(lift = cumulative_lift) %>%
+  dplyr::rename(lift = cumulative_lift) %>%
   pivot_longer(cols = c(lift, baseline), values_to = "value", names_to = "key")
 
 lift_transformed_tbl %>%
@@ -392,8 +398,7 @@ plot_h2o_performance <- function(h2o_leaderboard, newdata, order_by = c("auc", "
   
   
   leaderboard_tbl <- h2o_leaderboard %>%
-    as_tibble() %>%
-    slice(1:max_models)
+    as_tibble() 
   
   newdata_tbl <- newdata %>%
     as_tibble()
@@ -483,7 +488,7 @@ plot_h2o_performance <- function(h2o_leaderboard, newdata, order_by = c("auc", "
         as.character() %>% 
         as_factor()
     ) %>%
-    rename(
+    dplyr::rename(
       gain = cumulative_capture_rate,
       lift = cumulative_lift
     ) 

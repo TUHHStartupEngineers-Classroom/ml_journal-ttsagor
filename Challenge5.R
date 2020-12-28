@@ -63,7 +63,7 @@ slotNames(automl_models_h2o)
 automl_models_h2o@leaderboard 
 automl_models_h2o@leader
 
-h2o.getModel("DRF_1_AutoML_20201224_182023")
+h2o.getModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/DRF_1_AutoML_20201224_182023")
 
 extract_h2o_model_name_by_position <- function(h2o_leaderboard, n = 1, verbose = T) {
   
@@ -85,7 +85,7 @@ automl_models_h2o@leaderboard %>%
 
 
 
-stacked_ensemble_h2o <- h2o.loadModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_2_AutoML_20201224_183739")
+stacked_ensemble_h2o <- h2o.loadModel("C:/Users/sagor/Documents/GitHub/ml_journal-ttsagor/h20_models/GBM_1_AutoML_20201224_205832")
 stacked_ensemble_h2o
 
 predictions <- h2o.predict(stacked_ensemble_h2o, newdata = as.h2o(test_tbl))
